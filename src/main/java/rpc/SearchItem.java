@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import db.MySQLConnection;
 import entity.Item;
@@ -18,7 +19,17 @@ import org.json.JSONObject;
 public class SearchItem extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.setStatus(403);
+            return;
+        }
+
         String userId = request.getParameter("user_id");
+        if (!((String) session.getAttribute("user_id")).equalsIgnoreCase(userId)) {
+            response.setStatus(403);
+            return;
+        }
         double lat = Double.parseDouble(request.getParameter("lat"));
         double lon = Double.parseDouble(request.getParameter("lon"));
 

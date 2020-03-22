@@ -9,14 +9,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Set;
 
 public class ItemHistory extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String userId = request.getParameter("user_id");
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.setStatus(403);
+            return;
+        }
 
+        String userId = request.getParameter("user_id");
+        if (!((String) session.getAttribute("user_id")).equalsIgnoreCase(userId)) {
+            response.setStatus(403);
+            return;
+        }
         MySQLConnection connection = new MySQLConnection();
         Set<Item> items = connection.getFavoriteItems(userId);
         connection.close();
@@ -31,9 +41,19 @@ public class ItemHistory extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.setStatus(403);
+            return;
+        }
+
         MySQLConnection connection = new MySQLConnection();
         JSONObject input = RpcHelper.readJSONObject(request);
         String userId = input.getString("user_id");
+        if (!((String) session.getAttribute("user_id")).equalsIgnoreCase(userId)) {
+            response.setStatus(403);
+            return;
+        }
         Item item = RpcHelper.parseFavoriteItem(input.getJSONObject("favorite"));
 
         connection.setFavoriteItems(userId, item);
@@ -42,9 +62,20 @@ public class ItemHistory extends HttpServlet {
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendError(403, "Not Authenticated");
+            response.setStatus(403);
+            return;
+        }
+
         MySQLConnection connection = new MySQLConnection();
         JSONObject input = RpcHelper.readJSONObject(request);
         String userId = input.getString("user_id");
+        if (!((String) session.getAttribute("user_id")).equalsIgnoreCase(userId)) {
+            response.setStatus(403);
+            return;
+        }
         Item item = RpcHelper.parseFavoriteItem(input.getJSONObject("favorite"));
 
         connection.unsetFavoriteItems(userId, item.getItemId());
