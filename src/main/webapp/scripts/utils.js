@@ -6,32 +6,31 @@ function showElement(element, style) {
     element.style.display = style ? style : 'block';
 }
 
-function clearLoginError() {
-    document.querySelector('#login-error').innerHTML = '';
-}
-
 function clearRegisterResult() {
     document.querySelector('#register-result').innerHTML = '';
 }
 
 function showLoadingMessage(msg) {
     var itemList = document.querySelector('#item-list');
-    itemList.innerHTML = '<p class="notice"><i class="fa fa-spinner fa-spin"></i> ' +
-        msg + '</p>';
+    itemList.innerHTML = '<p class="notice"><i class="fa fa-spinner fa-spin"></i> ' + msg + '</p>';
 }
 
 function showWarningMessage(msg) {
     var itemList = document.querySelector('#item-list');
-    itemList.innerHTML = '<p class="notice"><i class="fa fa-exclamation-triangle"></i> '
-        + msg + '</p>';
+    itemList.innerHTML = '<p class="notice"><i class="fa fa-exclamation-triangle"></i> ' + msg + '</p>';
+}
+
+function showErrorMessage(msg) {
+    var itemList = document.querySelector('#item-list');
+    itemList.innerHTML = '<p class="notice"><i class="fa fa-exclamation-circle"></i> ' + msg + '</p>';
 }
 
 function showLoginError() {
     document.querySelector('#login-error').innerHTML = 'Invalid username or password';
 }
 
-function showErrorMessage(err) {
-    console.log(err);
+function clearLoginError() {
+    document.querySelector('#login-error').innerHTML = '';
 }
 
 function activeBtn(btnId) {
@@ -92,16 +91,13 @@ function addItem(itemList, item) {
         className: 'item'
     });
 
-    // set the data attribute ex. <li data-item_id="G5vYZ4kxGQVCR"
-    // data-favorite="true">
+    // set the data attribute ex. <li data-item_id="G5vYZ4kxGQVCR" data-favorite="true">
     li.dataset.item_id = item_id;
     li.dataset.favorite = item.favorite;
 
     // item image
     if (item.image_url) {
-        li.appendChild($create('img', {
-            src: item.image_url
-        }));
+        li.appendChild($create('img', { src: item.image_url }));
     } else {
         li.appendChild($create('img', {
             src: 'https://via.placeholder.com/100'

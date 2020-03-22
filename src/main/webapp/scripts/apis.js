@@ -1,5 +1,4 @@
 function loadNearbyItems() {
-    console.log('loadNearbyItems');
     activeBtn('nearby-btn');
 
     // The request parameters
@@ -24,7 +23,8 @@ function loadNearbyItems() {
         // failed callback
         function() {
             showErrorMessage('Cannot load nearby items.');
-        });
+        }
+    );
 }
 
 function changeFavoriteItem(item) {
@@ -80,18 +80,14 @@ function loadRecommendedItems() {
     activeBtn('recommend-btn');
 
     // request parameters
-    var url = './recommendation' + '?' + 'user_id=' + user_id + '&lat=' + lat
-        + '&lon=' + lng;
+    var url = './recommendation' + '?' + 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lng;
     var data = null;
 
     // display loading message
     showLoadingMessage('Loading recommended items...');
 
     // make AJAX call
-    ajax(
-        'GET',
-        url,
-        data,
+    ajax('GET', url, data,
         // successful callback
         function(res) {
             var items = JSON.parse(res);
@@ -104,5 +100,6 @@ function loadRecommendedItems() {
         // failed callback
         function() {
             showErrorMessage('Cannot load recommended items.');
-        });
+        }
+    );
 }

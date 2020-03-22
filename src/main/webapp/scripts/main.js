@@ -6,14 +6,19 @@ var lat = 37.38;
 
 function init() {
     document.querySelector('#login-form-btn').addEventListener('click', onSessionInvalid);
-    document.querySelector('#register-form-btn').addEventListener('click', showRegisterForm);
     document.querySelector('#login-btn').addEventListener('click', login);
+    document.querySelector('#register-form-btn').addEventListener('click', showRegisterForm);
     document.querySelector('#register-btn').addEventListener('click', register);
     document.querySelector('#nearby-btn').addEventListener('click', loadNearbyItems);
     document.querySelector('#fav-btn').addEventListener('click', loadFavoriteItems);
     document.querySelector('#recommend-btn').addEventListener('click', loadRecommendedItems);
 
     validateSession();
+
+    document.querySelector('#login-form-btn').setAttribute('class', 'mui-btn mui-btn--small mui-btn--raised');
+    document.querySelector('#login-btn').setAttribute('class', 'mui-btn mui-btn--small mui-btn--raised mui-btn--primary');
+    document.querySelector('#register-form-btn').setAttribute('class', 'mui-btn mui-btn--small mui-btn--raised');
+    document.querySelector('#register-btn').setAttribute('class', 'mui-btn mui-btn--small mui-btn--raised mui-btn--primary');
 }
 
 function validateSession() {
@@ -33,12 +38,10 @@ function validateSession() {
             var result = JSON.parse(res);
 
             if (result.status === 'OK') {
-                // case2: session valid
                 console.log('ok')
             }
         }, function() {
-            // case1: session invalid
-            console.log('session is invalid');
+            console.log('login error')
         });
 }
 
@@ -89,7 +92,8 @@ function onSessionValid(result) {
 
 function initGeoLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(onPositionUpdated,
+        navigator.geolocation.getCurrentPosition(
+            onPositionUpdated,
             onLoadPositionFailed, {
                 maximumAge: 60000
             });
@@ -148,14 +152,15 @@ function login() {
 
             // successfully logged in
             if (result.status === 'OK') {
-                console.log(result);
                 onSessionValid(result);
             }
         },
+
         // error
         function() {
             showLoginError();
-        });
+        },
+        true);
 }
 
 function showRegisterForm() {
@@ -184,8 +189,7 @@ function register() {
     var firstName = document.querySelector('#register-first-name').value;
     var lastName = document.querySelector('#register-last-name').value;
 
-    if (username === "" || password == "" || firstName === ""
-        || lastName === "") {
+    if (username === "" || password == "" || firstName === "" || lastName === "") {
         showRegisterResult('Please fill in all fields');
         return
     }
@@ -222,7 +226,8 @@ function register() {
         // error
         function() {
             showRegisterResult('Failed to register');
-        }, true);
+        },
+        true);
 }
 
 function showRegisterResult(registerMessage) {
@@ -232,6 +237,5 @@ function showRegisterResult(registerMessage) {
 function clearRegisterResult() {
     document.querySelector('#register-result').innerHTML = '';
 }
-
 
 init();

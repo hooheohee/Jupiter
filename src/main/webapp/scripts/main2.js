@@ -21,7 +21,11 @@
         document.querySelector('#fav-btn').addEventListener('click', loadFavoriteItems);
         document.querySelector('#recommend-btn').addEventListener('click', loadRecommendedItems);
         // validateSession();
-        onSessionValid({"user_id": "1111", "name": "John Smith", "status": "OK"});
+        onSessionValid({ "user_id": "1111", "name": "John Smith", "status": "OK" });
+        document.querySelector('#login-form-btn').setAttribute('class', 'mui-btn mui-btn--small mui-btn--raised');
+        document.querySelector('#login-btn').setAttribute('class', 'mui-btn mui-btn--small mui-btn--raised mui-btn--primary');
+        document.querySelector('#register-form-btn').setAttribute('class', 'mui-btn mui-btn--small mui-btn--raised');
+        document.querySelector('#register-btn').setAttribute('class', 'mui-btn mui-btn--small mui-btn--raised mui-btn--primary');
     }
 
     /**
@@ -459,22 +463,22 @@
     /**
      * API #4 Toggle favorite (or visited) items
      *
-     * @param item_id - The item business id
+     * @param item - The item from the list
      *
      * API end point: [POST]/[DELETE] /history request json data: {
-     * user_id: 1111, visited: [a_list_of_business_ids] }
+     * user_id: 1111, favorite: item }
      */
-    function changeFavoriteItem(item_id) {
+    function changeFavoriteItem(item) {
         // check whether this item has been visited or not
-        var li = document.querySelector('#item-' + item_id);
-        var favIcon = document.querySelector('#fav-icon-' + item_id);
+        var li = document.querySelector('#item-' + item.item_id);
+        var favIcon = document.querySelector('#fav-icon-' + item.item_id);
         var favorite = !(li.dataset.favorite === 'true');
 
         // request parameters
         var url = './history';
         var req = JSON.stringify({
             user_id: user_id,
-            favorite: [item_id]
+            favorite: item
         });
         var method = favorite ? 'POST' : 'DELETE';
 
@@ -517,12 +521,7 @@
      <img alt="item image" src="https://s3-media3.fl.yelpcdn.com/bphoto/EmBj4qlyQaGd9Q4oXEhEeQ/ms.jpg" />
      <div>
      <a class="item-name" href="#" target="_blank">Item</a>
-     <p class="item-category">Vegetarian</p>
-     <div class="stars">
-     <i class="fa fa-star"></i>
-     <i class="fa fa-star"></i>
-     <i class="fa fa-star"></i>
-     </div>
+     <p class="item-keyword">Vegetarian</p>
      </div>
      <p class="item-address">699 Calderon Ave<br/>Mountain View<br/> CA</p>
      <div class="fav-link">
@@ -545,10 +544,10 @@
 
         // item image
         if (item.image_url) {
-            li.appendChild($create('img', {src: item.image_url}));
+            li.appendChild($create('img', { src: item.image_url }));
         } else {
             li.appendChild($create('img', {
-                src: 'https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png'
+                src: 'https://via.placeholder.com/100'
             }));
         }
         // section
@@ -563,32 +562,12 @@
         title.innerHTML = item.name;
         section.appendChild(title);
 
-        // category
-        // var category = $create('p', {
-        //     className: 'item-category'
-        // });
-        // category.innerHTML = 'Category: ' + item.categories.join(', ');
-        // section.appendChild(category);
-
-        // stars
-        var stars = $create('div', {
-            className: 'stars'
+        // keyword
+        var keyword = $create('p', {
+            className: 'item-keyword'
         });
-
-        for (var i = 0; i < item.rating; i++) {
-            var star = $create('i', {
-                className: 'fa fa-star'
-            });
-            stars.appendChild(star);
-        }
-
-        if (('' + item.rating).match(/\.5$/)) {
-            stars.appendChild($create('i', {
-                className: 'fa fa-star-half-o'
-            }));
-        }
-
-        section.appendChild(stars);
+        keyword.innerHTML = 'Keyword: ' + item.keywords.join(', ');
+        section.appendChild(keyword);
 
         li.appendChild(section);
 
@@ -607,7 +586,7 @@
         });
 
         favLink.onclick = function() {
-            changeFavoriteItem(item_id);
+            changeFavoriteItem(item);
         };
 
         favLink.appendChild($create('i', {
