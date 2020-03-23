@@ -1,12 +1,12 @@
-(function() {
+(() => {
 
     /**
      * Variables
      */
-    var user_id = '1111';
-    var user_fullname = 'John';
-    var lon = -122.08;
-    var lat = 37.38;
+    let user_id = '1111';
+    let user_fullname = 'John';
+    let lon = -122.08;
+    let lat = 37.38;
 
     /**
      * Initialize major event handlers
@@ -36,8 +36,8 @@
     function validateSession() {
         onSessionInvalid();
         // The request parameters
-        var url = './login';
-        var req = JSON.stringify({});
+        const url = './login';
+        const req = JSON.stringify({});
 
         // display loading message
         showLoadingMessage('Validating session...');
@@ -46,7 +46,7 @@
         ajax('GET', url, req,
             // session is still valid
             function(res) {
-                var result = JSON.parse(res);
+                const result = JSON.parse(res);
 
                 if (result.status === 'OK') {
                     onSessionValid(result);
@@ -57,16 +57,16 @@
     }
 
     function onSessionValid(result) {
-        user_id = result.userId;
+        user_id = result.user_id;
         user_fullname = result.name;
 
-        var loginForm = document.querySelector('#login-form');
-        var registerForm = document.querySelector('#register-form');
-        var itemNav = document.querySelector('#item-nav');
-        var itemList = document.querySelector('#item-list');
-        var avatar = document.querySelector('#avatar');
-        var welcomeMsg = document.querySelector('#welcome-msg');
-        var logoutBtn = document.querySelector('#logout-link');
+        const loginForm = document.querySelector('#login-form');
+        const registerForm = document.querySelector('#register-form');
+        const itemNav = document.querySelector('#item-nav');
+        const itemList = document.querySelector('#item-list');
+        const avatar = document.querySelector('#avatar');
+        const welcomeMsg = document.querySelector('#welcome-msg');
+        const logoutBtn = document.querySelector('#logout-link');
 
         welcomeMsg.innerHTML = 'Welcome, ' + user_fullname;
 
@@ -82,13 +82,13 @@
     }
 
     function onSessionInvalid() {
-        var loginForm = document.querySelector('#login-form');
-        var registerForm = document.querySelector('#register-form');
-        var itemNav = document.querySelector('#item-nav');
-        var itemList = document.querySelector('#item-list');
-        var avatar = document.querySelector('#avatar');
-        var welcomeMsg = document.querySelector('#welcome-msg');
-        var logoutBtn = document.querySelector('#logout-link');
+        const loginForm = document.querySelector('#login-form');
+        const registerForm = document.querySelector('#register-form');
+        const itemNav = document.querySelector('#item-nav');
+        const itemList = document.querySelector('#item-list');
+        const avatar = document.querySelector('#avatar');
+        const welcomeMsg = document.querySelector('#welcome-msg');
+        const logoutBtn = document.querySelector('#logout-link');
 
         hideElement(itemNav);
         hideElement(itemList);
@@ -110,13 +110,13 @@
     }
 
     function showRegisterForm() {
-        var loginForm = document.querySelector('#login-form');
-        var registerForm = document.querySelector('#register-form');
-        var itemNav = document.querySelector('#item-nav');
-        var itemList = document.querySelector('#item-list');
-        var avatar = document.querySelector('#avatar');
-        var welcomeMsg = document.querySelector('#welcome-msg');
-        var logoutBtn = document.querySelector('#logout-link');
+        const loginForm = document.querySelector('#login-form');
+        const registerForm = document.querySelector('#register-form');
+        const itemNav = document.querySelector('#item-nav');
+        const itemList = document.querySelector('#item-list');
+        const avatar = document.querySelector('#avatar');
+        const welcomeMsg = document.querySelector('#welcome-msg');
+        const logoutBtn = document.querySelector('#logout-link');
 
         hideElement(itemNav);
         hideElement(itemList);
@@ -157,13 +157,13 @@
 
     function getLocationFromIP() {
         // get location from http://ipinfo.io/json
-        var url = 'http://ipinfo.io/json'
-        var data = null;
+        const url = 'http://ipinfo.io/json';
+        const data = null;
 
         ajax('GET', url, data, function(res) {
-            var result = JSON.parse(res);
+            const result = JSON.parse(res);
             if ('loc' in result) {
-                var loc = result.loc.split(',');
+                const loc = result.loc.split(',');
                 lat = loc[0];
                 lon = loc[1];
             } else {
@@ -178,13 +178,13 @@
     // -----------------------------------
 
     function login() {
-        var username = document.querySelector('#username').value;
-        var password = document.querySelector('#password').value;
+        const username = document.querySelector('#username').value;
+        let password = document.querySelector('#password').value;
         password = md5(username + md5(password));
 
         // The request parameters
-        var url = './login';
-        var req = JSON.stringify({
+        const url = './login';
+        const req = JSON.stringify({
             user_id: username,
             password: password,
         });
@@ -192,7 +192,7 @@
         ajax('POST', url, req,
             // successful callback
             function(res) {
-                var result = JSON.parse(res);
+                const result = JSON.parse(res);
 
                 // successfully logged in
                 if (result.status === 'OK') {
@@ -220,12 +220,12 @@
     // -----------------------------------
 
     function register() {
-        var username = document.querySelector('#register-username').value;
-        var password = document.querySelector('#register-password').value;
-        var firstName = document.querySelector('#register-first-name').value;
-        var lastName = document.querySelector('#register-last-name').value;
+        const username = document.querySelector('#register-username').value;
+        let password = document.querySelector('#register-password').value;
+        const firstName = document.querySelector('#register-first-name').value;
+        const lastName = document.querySelector('#register-last-name').value;
 
-        if (username === "" || password == "" || firstName === "" || lastName === "") {
+        if (username === "" || password === "" || firstName === "" || lastName === "") {
             showRegisterResult('Please fill in all fields');
             return
         }
@@ -238,8 +238,8 @@
         password = md5(username + md5(password));
 
         // The request parameters
-        var url = './register';
-        var req = JSON.stringify({
+        const url = './register';
+        const req = JSON.stringify({
             user_id: username,
             password: password,
             first_name: firstName,
@@ -249,7 +249,7 @@
         ajax('POST', url, req,
             // successful callback
             function(res) {
-                var result = JSON.parse(res);
+                const result = JSON.parse(res);
 
                 // successfully logged in
                 if (result.status === 'OK') {
@@ -285,32 +285,32 @@
      * @param btnId - The id of the navigation button
      */
     function activeBtn(btnId) {
-        var btns = document.querySelectorAll('.main-nav-btn');
+        const btns = document.querySelectorAll('.main-nav-btn');
 
         // deactivate all navigation buttons
-        for (var i = 0; i < btns.length; i++) {
+        for (let i = 0; i < btns.length; i++) {
             btns[i].className = btns[i].className.replace(/\bactive\b/, '');
         }
 
         // active the one that has id = btnId
-        var btn = document.querySelector('#' + btnId);
+        const btn = document.querySelector('#' + btnId);
         btn.className += ' active';
     }
 
     function showLoadingMessage(msg) {
-        var itemList = document.querySelector('#item-list');
+        const itemList = document.querySelector('#item-list');
         itemList.innerHTML = '<p class="notice"><i class="fa fa-spinner fa-spin"></i> ' +
             msg + '</p>';
     }
 
     function showWarningMessage(msg) {
-        var itemList = document.querySelector('#item-list');
+        const itemList = document.querySelector('#item-list');
         itemList.innerHTML = '<p class="notice"><i class="fa fa-exclamation-triangle"></i> ' +
             msg + '</p>';
     }
 
     function showErrorMessage(msg) {
-        var itemList = document.querySelector('#item-list');
+        const itemList = document.querySelector('#item-list');
         itemList.innerHTML = '<p class="notice"><i class="fa fa-exclamation-circle"></i> ' +
             msg + '</p>';
     }
@@ -322,8 +322,8 @@
      * @returns {Element}
      */
     function $create(tag, options) {
-        var element = document.createElement(tag);
-        for (var key in options) {
+        const element = document.createElement(tag);
+        for (let key in options) {
             if (options.hasOwnProperty(key)) {
                 element[key] = options[key];
             }
@@ -341,7 +341,7 @@
      * @param errorCallback - Error callback function
      */
     function ajax(method, url, data, successCallback, errorCallback) {
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
 
         xhr.open(method, url, true);
 
@@ -379,9 +379,9 @@
         activeBtn('nearby-btn');
 
         // The request parameters
-        var url = './search';
-        var params = 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lon;
-        var data = null;
+        const url = './search';
+        const params = 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lon;
+        const data = null;
 
         // display loading message
         showLoadingMessage('Loading nearby items...');
@@ -390,7 +390,7 @@
         ajax('GET', url + '?' + params, data,
             // successful callback
             function(res) {
-                var items = JSON.parse(res);
+                const items = JSON.parse(res);
                 if (!items || items.length === 0) {
                     showWarningMessage('No nearby item.');
                 } else {
@@ -412,16 +412,16 @@
         activeBtn('fav-btn');
 
         // request parameters
-        var url = './history';
-        var params = 'user_id=' + user_id;
-        var req = JSON.stringify({});
+        const url = './history';
+        const params = 'user_id=' + user_id;
+        const req = JSON.stringify({});
 
         // display loading message
         showLoadingMessage('Loading favorite items...');
 
         // make AJAX call
         ajax('GET', url + '?' + params, req, function(res) {
-            var items = JSON.parse(res);
+            const items = JSON.parse(res);
             if (!items || items.length === 0) {
                 showWarningMessage('No favorite item.');
             } else {
@@ -440,8 +440,8 @@
         activeBtn('recommend-btn');
 
         // request parameters
-        var url = './recommendation' + '?' + 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lon;
-        var data = null;
+        const url = './recommendation' + '?' + 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lon;
+        const data = null;
 
         // display loading message
         showLoadingMessage('Loading recommended items...');
@@ -450,7 +450,7 @@
         ajax('GET', url, data,
             // successful callback
             function(res) {
-                var items = JSON.parse(res);
+                const items = JSON.parse(res);
                 if (!items || items.length === 0) {
                     showWarningMessage('No recommended item. Make sure you have favorites.');
                 } else {
@@ -474,22 +474,22 @@
      */
     function changeFavoriteItem(item) {
         // check whether this item has been visited or not
-        var li = document.querySelector('#item-' + item.item_id);
-        var favIcon = document.querySelector('#fav-icon-' + item.item_id);
-        var favorite = !(li.dataset.favorite === 'true');
+        const li = document.querySelector('#item-' + item.item_id);
+        const favIcon = document.querySelector('#fav-icon-' + item.item_id);
+        const favorite = !(li.dataset.favorite === 'true');
 
         // request parameters
-        var url = './history';
-        var req = JSON.stringify({
+        const url = './history';
+        const req = JSON.stringify({
             user_id: user_id,
             favorite: item
         });
-        var method = favorite ? 'POST' : 'DELETE';
+        const method = favorite ? 'POST' : 'DELETE';
 
         ajax(method, url, req,
             // successful callback
             function(res) {
-                var result = JSON.parse(res);
+                const result = JSON.parse(res);
                 if (result.status === 'OK' || result.result === 'SUCCESS') {
                     li.dataset.favorite = favorite;
                     favIcon.className = favorite ? 'fa fa-heart' : 'fa fa-heart-o';
@@ -507,10 +507,10 @@
      * @param items - An array of item JSON objects
      */
     function listItems(items) {
-        var itemList = document.querySelector('#item-list');
+        const itemList = document.querySelector('#item-list');
         itemList.innerHTML = ''; // clear current results
 
-        for (var i = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i++) {
             addItem(itemList, items[i]);
         }
     }
@@ -534,10 +534,10 @@
      </li>
      */
     function addItem(itemList, item) {
-        var item_id = item.item_id;
+        const item_id = item.item_id;
 
         // create the <li> tag and specify the id and class attributes
-        var li = $create('li', {
+        const li = $create('li', {
             id: 'item-' + item_id,
             className: 'item'
         });
@@ -555,10 +555,10 @@
             }));
         }
         // section
-        var section = $create('div');
+        const section = $create('div');
 
         // title
-        var title = $create('a', {
+        const title = $create('a', {
             className: 'item-name',
             href: item.url,
             target: '_blank'
@@ -567,7 +567,7 @@
         section.appendChild(title);
 
         // keyword
-        var keyword = $create('p', {
+        const keyword = $create('p', {
             className: 'item-keyword'
         });
         keyword.innerHTML = 'Keyword: ' + item.keywords.join(', ');
@@ -576,7 +576,7 @@
         li.appendChild(section);
 
         // address
-        var address = $create('p', {
+        const address = $create('p', {
             className: 'item-address'
         });
 
@@ -585,7 +585,7 @@
         li.appendChild(address);
 
         // favorite link
-        var favLink = $create('p', {
+        const favLink = $create('p', {
             className: 'fav-link'
         });
 

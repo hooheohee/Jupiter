@@ -41,7 +41,7 @@ public class Login extends HttpServlet {
             session.setMaxInactiveInterval(600);
             res.put("status", "OK")
                     .put("name", connection.getFullName(userId))
-                    .put("userId", userId);
+                    .put("user_id", userId);
         } else {
             res.put("status", "Wrong username or password!");
             resp.setStatus(401);
