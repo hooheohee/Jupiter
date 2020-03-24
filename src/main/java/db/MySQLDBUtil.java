@@ -1,7 +1,7 @@
 package db;
 
 public class MySQLDBUtil {
-    private static final String INSTANCE = "jupiter.c21ajhxza0j3.us-east-2.rds.amazonaws.com";
+    private static final String INSTANCE = "JUPITER_DB";
     private static final String PORT_NUM = "3306";
     public static final String DB_NAME = "jupiter";
     private static final String USERNAME = "admin";
