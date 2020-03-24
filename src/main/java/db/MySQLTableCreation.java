@@ -1,8 +1,8 @@
 package db;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.sql.Connection;
 
 public class MySQLTableCreation {
     // Run this as Java application to reset the database.

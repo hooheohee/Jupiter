@@ -1,15 +1,11 @@
 package db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
-
 import entity.Item;
 import entity.Item.ItemBuilder;
+
+import java.sql.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MySQLConnection {
     private Connection conn;
