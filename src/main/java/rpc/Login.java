@@ -30,22 +30,22 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        JSONObject obj = RpcHelper.readJSONObject(req);
-        String userId = obj.getString("user_id");
-        String password = obj.getString("password");
-        JSONObject res = new JSONObject();
+        JSONObject input = RpcHelper.readJSONObject(req);
+        String userId = input.getString("user_id");
+        String password = input.getString("password");
+        JSONObject obj = new JSONObject();
         MySQLConnection connection = new MySQLConnection();
         if (connection.verifyLogin(userId, password)) {
             HttpSession session = req.getSession();
             session.setAttribute("user_id", userId);
             session.setMaxInactiveInterval(600);
-            res.put("status", "OK")
+            obj.put("status", "OK")
                     .put("name", connection.getFullName(userId))
                     .put("user_id", userId);
         } else {
-            res.put("status", "Wrong username or password!");
+            obj.put("status", "Wrong username or password!");
             resp.setStatus(401);
         }
-        RpcHelper.writeJsonObject(resp, res);
+        RpcHelper.writeJsonObject(resp, obj);
     }
 }

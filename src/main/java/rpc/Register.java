@@ -12,19 +12,19 @@ import java.io.IOException;
 public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        JSONObject obj = RpcHelper.readJSONObject(req);
-        String userId = obj.getString("user_id");
-        String password = obj.getString("password");
-        String firstName = obj.getString("first_name");
-        String lastName = obj.getString("last_name");
+        JSONObject input = RpcHelper.readJSONObject(req);
+        String userId = input.getString("user_id");
+        String password = input.getString("password");
+        String firstName = input.getString("first_name");
+        String lastName = input.getString("last_name");
         MySQLConnection connection = new MySQLConnection();
-        JSONObject res = new JSONObject();
+        JSONObject obj = new JSONObject();
         if (connection.addUser(userId, password, firstName, lastName)) {
-            res.put("status", "OK");
+            obj.put("status", "OK");
         } else {
-            res.put("status", "User already exists.");
+            obj.put("status", "User already exists.");
         }
         connection.close();
-        RpcHelper.writeJsonObject(resp, res);
+        RpcHelper.writeJsonObject(resp, obj);
     }
 }
