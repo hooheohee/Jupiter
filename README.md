@@ -1,5 +1,6 @@
 ## Jupiter
-A job recommendation app for software developers that use user's geolocation and favorite jobs to recommend similar jobs
+A job recommendation app for software developers that use user's geolocation and favorite jobs to recommend similar jobs  
+Try it here: http://ec2-13-58-121-16.us-east-2.compute.amazonaws.com/jupiter
 
 ### Get Started Locally
 1. Set up tomcat 9.0.31
