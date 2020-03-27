@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MonkeyLearnClient {
 
-    private static final String API_KEY = "495fe0392e97f83a454775960f667ed63ad640e2";
+    private static final String API_KEY = System.getenv("MONKEY_LEARN_API_KEY");
 
     public static void main(String[] args) {
         String[] textList = {"Elon Musk has shared a photo of the spacesuit designed by SpaceX. This is the second image shared of the new design and the first to feature the spacesuit’s full-body look."};
