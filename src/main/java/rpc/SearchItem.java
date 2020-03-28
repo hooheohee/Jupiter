@@ -19,16 +19,15 @@ public class SearchItem extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if (session == null) {
+        String userId = request.getParameter("user_id");
+        if (session == null || !((String) session.getAttribute("user_id")).equalsIgnoreCase(userId)) {
+            JSONObject object = new JSONObject();
+            object.put("status", "Invalid Session");
             response.setStatus(403);
+            RpcHelper.writeJsonObject(response, object);
             return;
         }
 
-        String userId = request.getParameter("user_id");
-        if (!((String) session.getAttribute("user_id")).equalsIgnoreCase(userId)) {
-            response.setStatus(403);
-            return;
-        }
         double lat = Double.parseDouble(request.getParameter("lat"));
         double lon = Double.parseDouble(request.getParameter("lon"));
 
